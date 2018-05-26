@@ -1,0 +1,74 @@
+{
+    "meta" : {
+        "action" : "/",
+        "method" : "POST",
+        "name" : "<name_of_form>",
+        "id" : "<id_of_form>",
+        "class" : "<class_of_form>"
+    },
+    "structure" : {
+        "page_count" :  3, 
+        "pages" : [
+            [
+                {
+                    "type" : "segment.type",
+                    "item" : "segment.item",
+                    "parent" : "segment.parent_id",
+                    "depth" : "segment.depth",
+                    "children" : [
+                        {
+                            "type" : "segment",
+                            "item" : "segment.item",
+                            "parent" : "segment.parent_id",
+                            "depth" : "segment.depth",
+                            "children" : [
+                                {
+                                    "type" : "question",
+                                    "meta" : {
+                                        "question" : "question.text",
+                                        "type" : "question.type",
+                                        "name" : "question.id",
+                                        "depth" : "question.depth",
+                                        "answers" : [
+                                            {
+                                                "id" : "answers.id",
+                                                "value" : "answers.value",
+                                                "type" : "answers.type"
+                                            },
+                                            {
+                                                "id" : "answers.id",
+                                                "value" : "answers.value",
+                                                "type" : "answers.type"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "type" : "question",
+                                    "meta" : {
+                                        "question" : "question.text",
+                                        "type" : "question.type",
+                                        "name" : "question.id",
+                                        "depth" : "question.depth",
+                                        "answers" : [
+                                            {
+                                                "id" : "answers.id",
+                                                "value" : "answers.value",
+                                                "type" : "answers.type"
+                                            },
+                                            {
+                                                "id" : "answers.id",
+                                                "value" : "answers.value",
+                                                "type" : "answers.type"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                    ]
+                }
+            ],
+        ]
+    }
+}
