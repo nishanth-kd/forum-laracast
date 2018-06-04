@@ -15,6 +15,10 @@ class CreateThreadsTable extends Migration
     {
         Schema::create('threads', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->string('title');
+            $table->text('body');
             $table->timestamps();
         });
     }
@@ -26,6 +30,9 @@ class CreateThreadsTable extends Migration
      */
     public function down()
     {
+        Schema::table('threads', function (Blueprint $table) {
+            $table->dropForeign('threads_user_id_foreign');
+        });
         Schema::dropIfExists('threads');
     }
 }
