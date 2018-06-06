@@ -2,17 +2,13 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-
-class ThreadsTest extends TestCase
+use Tests\FeatureTestCase;
+class ThreadsTest extends FeatureTestCase
 {
-    use DatabaseMigrations;
-
     public function setUp() {
         parent::setUp();
-        $this->thread = factory('App\Models\Thread')->create();
-        $this->reply = factory('App\Models\Reply')->create(['thread_id' => $this->thread->id]);
+        $this->thread = create('App\Models\Thread');
+        $this->reply = create('App\Models\Reply', ['thread_id' => $this->thread->id]);
     }
 
     /** @test */
@@ -30,7 +26,7 @@ class ThreadsTest extends TestCase
     }
 
     /** @test */
-    public function a_user_can_view_replies()
+    public function anyone_can_view_replies()
     {
         $response = $this->get('/threads/' . $this->thread->id)
             ->assertSee($this->reply->body)
@@ -52,7 +48,7 @@ class ThreadsTest extends TestCase
      /** @test */
      public function a_thread_can_add_a_reply()
      {
-        $user = factory('App\User')->create();
+        $user = create('App\User');
         $this->thread->addReply([
             'body' => 'Test',
             'user_id' => $user->id,

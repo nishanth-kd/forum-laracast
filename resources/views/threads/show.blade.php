@@ -4,44 +4,53 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+            <h3> {{ $thread->title }} </h3>
+            <h5 class="text-muted">posted by <a href="#"> {{ $thread->owner->name }}</a> </h5>
+            <br>
             <div class="card card-default">
-                <div class="card-header">Thread</div>
-
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-                    <h5 class="card-title">{{ $thread->title }}</h5>
-                    
-                    <p class="card-text">
-                        <h7 class="card-subtitle mb-2 text-muted">
-                                by <a href="#"> {{ $thread->owner->name }}</a> 
-                        </h7><br><br>
-                        {{ $thread->body }}
-                    </p>
+                    {{ $thread->body }}
                 </div>
             </div>
+            <hr>
         </div>
     </div>
-    <hr>
-    
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card card-default">
-                <div class="card-header">Replies</div>
-                <div class="card-body">
-                    @foreach($thread->replies as $reply)
-                        <h6 class="card-subtitle mb-2 text-muted" id ="reply-{{ $reply->id }}">
-                            <a href="#">{{ $reply->owner->name }}</a> says <a href="#reply-{{ $reply->id }}">{{ $reply->created_at->diffForHumans() }}</a></h6>
-                        {{ $reply->body }}
-                        <br>
-                    @endforeach
+            <h4 class="text-muted">Replies</h4>
+            @foreach($thread->replies as $reply)
+            <div class="card card-default border-light" style="margin-bottom:10px">
+                <div class="card-body text-secondary">
+                    <h6 class="card-subtitle mb-2 text-muted" id ="reply-{{ $reply->id }}">
+                        <a href="#">{{ $reply->owner->name }}</a> says <a href="#reply-{{ $reply->id }}">{{ $reply->created_at->diffForHumans() }}</a>
+                    </h6>
+                    {{ $reply->body }}
+                    <br>
                 </div>
             </div>
+            @endforeach
+            <br>
         </div>
     </div>
-    
+
+    @if(auth()->check())
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form action="{{ $thread->path() . '/replies' }}" method="post">
+                {{ csrf_field() }}
+                <div class="form-group">
+                    <textarea name="body" id="body" cols="2" class="form-control" placeholder="Say something..." rows="4"></textarea>
+                </div> 
+                <button type="submit" class="btn btn-primary">Comment</button>
+            </form>
+        </div>
+    </div>
+    @else
+    <div class="row justify-content-center text-center">
+        <div class="col-md-8">
+            Please <a href="{{ route('login') }}">sign in</a> to participate in the discussion.
+        </div>
+    </div>
+    @endif
 </div>
 @endsection

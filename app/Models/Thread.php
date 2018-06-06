@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
-    
+    protected $fillable = ['user_id', 'body', 'title'];
+   
     public function path() {
         return '/threads/' . $this->id;
     }
