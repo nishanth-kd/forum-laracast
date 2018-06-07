@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Thread;
+use App\Models\Channel;
 use Illuminate\Http\Request;
 
 class ThreadsController extends Controller
@@ -28,7 +29,8 @@ class ThreadsController extends Controller
      */
     public function create()
     {
-        return view('threads.create');
+        $channels = Channel::orderBy('name')->get(['name', 'id']);
+        return view('threads.create', compact('channels'));
     }
 
     /**
@@ -39,12 +41,15 @@ class ThreadsController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'title' => 'required'
+        ]);
         $thread = Thread::create([
             'title' => $request->input('title'),
             'body' => $request->input('body'),
+            'channel_id' => $request->input('channel_id'),
             'user_id' => auth()->id(),
         ]);
-
         return redirect($thread->path());
     }
 
@@ -54,7 +59,7 @@ class ThreadsController extends Controller
      * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function show(Thread $thread)
+    public function show($channelSlug, Thread $thread)
     {
         return view('threads.show', compact('thread'));
     }

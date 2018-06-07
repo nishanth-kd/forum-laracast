@@ -30,8 +30,8 @@ class ParticipateInForumTest extends FeatureTestCase
     public function an_unauthenticated_user_cant_reply_on_thread()
     {
         $this->withoutExceptionHandling()
-            ->expectException('Illuminate\Auth\AuthenticationException')
-            ->postReply();
+            ->expectException('Illuminate\Auth\AuthenticationException');
+        $this->postReply();
     }
 
 }

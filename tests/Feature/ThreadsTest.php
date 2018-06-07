@@ -21,14 +21,14 @@ class ThreadsTest extends FeatureTestCase
     /** @test */
     public function a_user_can_view_single_thread()
     {
-        $response = $this->get('/threads/' . $this->thread->id)
+        $response = $this->get($this->thread->path())
             ->assertSee($this->thread->title);
     }
 
     /** @test */
     public function anyone_can_view_replies()
     {
-        $response = $this->get('/threads/' . $this->thread->id)
+        $response = $this->get($this->thread->path())
             ->assertSee($this->reply->body)
             ->assertSee($this->reply->owner->name);
     }
@@ -45,15 +45,24 @@ class ThreadsTest extends FeatureTestCase
         $this->assertInstanceOf('App\User', $this->reply->owner);
     }
 
-     /** @test */
-     public function a_thread_can_add_a_reply()
-     {
+    /** @test */
+    public function a_thread_can_add_a_reply()
+    {
         $user = create('App\User');
         $this->thread->addReply([
             'body' => 'Test',
             'user_id' => $user->id,
         ]);
-
         $this->assertCount(2, $this->thread->replies);
-     }
+    }
+
+    /** @test */
+    public function a_thread_belongs_to_channel() {
+        $this->assertInstanceOf('App\Models\Channel', $this->thread->channel);
+    }
+
+    /** @test */
+    public function a_thread_path_should_include_channel() {
+        $this->assertEquals($this->thread->path(), '/threads/' . $this->thread->channel->slug . '/' . $this->thread->id);
+    }
 }

@@ -18,6 +18,13 @@
                             <input type="text" name="title" id="title" cols="2" class="form-control" placeholder="Title" rows="4"/>
                         </div>
                         <div class="form-group">
+                            <select name="channel_id" id="channel_id" cols="2" class="form-control" placeholder="Channel">
+                                @foreach($channels as $channel)
+                                <option value="{{ $channel->id }}">{{ $channel->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <textarea name="body" id="body" cols="2" class="form-control" placeholder="Body" rows="4"></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Post</button>

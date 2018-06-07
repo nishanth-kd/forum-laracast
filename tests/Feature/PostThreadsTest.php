@@ -13,18 +13,18 @@ class PostThreadsTest extends FeatureTestCase
     }
 
     /** @test */
-    public function an_authenticated_user_can_reply_on_thread()
+    public function an_authenticated_user_can_post_a_thread()
     {
         $this->signIn();
         $this->postThread();
     }
 
     /** @test */
-    public function an_guest_cant_reply_on_thread()
+    public function an_guest_cant_post_a_thread()
     {
         $this->withoutExceptionHandling()
-            ->expectException('Illuminate\Auth\AuthenticationException')
-            ->postThread();
+            ->expectException('Illuminate\Auth\AuthenticationException');
+        $this->postThread();
     }
 
     /** @test */
@@ -42,10 +42,19 @@ class PostThreadsTest extends FeatureTestCase
             ->assertStatus(200);
     }
 
+    /** @test */
+    public function a_thread_requires_a_title()
+    {
+        $this->signIn();
+        $thread = make('App\Models\Thread', ['title' => null]);
+        $this->call('POST', '/threads/', $thread->toArray())
+            ->assertSessionHasErrors('title');
+    }
+
     public function postThread() {
         $thread = make('App\Models\Thread');
-        $this->post('/threads/', $thread->toArray());
-        $this->get($thread->path())
+        $response = $this->post('/threads/', $thread->toArray());
+        $this->get($response->headers->get('Location'))
             ->assertSee($thread->title)
             ->assertSee($thread->body);
     }
