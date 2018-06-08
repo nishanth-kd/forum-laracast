@@ -5,34 +5,13 @@ namespace Tests\Feature;
 use Tests\FeatureTestCase;
 class ThreadsTest extends FeatureTestCase
 {
+
     public function setUp() {
         parent::setUp();
         $this->thread = create('App\Models\Thread');
         $this->reply = create('App\Models\Reply', ['thread_id' => $this->thread->id]);
     }
-
-    /** @test */
-    public function a_user_can_view_all_threads()
-    {
-        $response = $this->get('/threads')
-            ->assertSee($this->thread->title);
-    }
-
-    /** @test */
-    public function a_user_can_view_single_thread()
-    {
-        $response = $this->get($this->thread->path())
-            ->assertSee($this->thread->title);
-    }
-
-    /** @test */
-    public function anyone_can_view_replies()
-    {
-        $response = $this->get($this->thread->path())
-            ->assertSee($this->reply->body)
-            ->assertSee($this->reply->owner->name);
-    }
-
+    
     /** @test */
     public function a_thread_has_owner()
     {
@@ -65,4 +44,5 @@ class ThreadsTest extends FeatureTestCase
     public function a_thread_path_should_include_channel() {
         $this->assertEquals($this->thread->path(), '/threads/' . $this->thread->channel->slug . '/' . $this->thread->id);
     }
+    
 }
