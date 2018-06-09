@@ -27,18 +27,23 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        <li><a class="nav-link" href="/threads">Threads</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Browse <span class="caret"></span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="/threads">All Threads</a>
+                                @if(auth()->check())
+                                <a class="dropdown-item" href="/threads?by={{ auth()->user()->name }}">My Threads</a>
+                                @endif 
+                            </div>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Channels <span class="caret"></span>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                   onclick="event.preventDefault();
-                                                 document.getElementById('logout-form').submit();">
-                                    
-                                </a>
-                                @foreach(App\Models\Channel::all() as $channel)
+                                @foreach($channels as $channel)
                                 <a class="dropdown-item" href="/threads/{{ $channel->slug }}"> {{ $channel->name }}</a>
                                 @endforeach
                             </div>

@@ -47,8 +47,8 @@ class PostThreadsTest extends FeatureTestCase
     {
         $this->signIn();
         $thread = make('App\Models\Thread', ['title' => null]);
-        $this->call('POST', '/threads/', $thread->toArray())
-            ->assertSessionHasErrors('title');
+        $response = $this->call('POST', '/threads/', $thread->toArray());
+        $response->assertSessionHasErrors('title');
     }
 
     public function postThread() {

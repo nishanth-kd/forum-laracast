@@ -15,19 +15,31 @@
                     <form action="/threads/" method="post">
                         {{ csrf_field() }}
                         <div class="form-group">
-                            <input type="text" name="title" id="title" cols="2" class="form-control" placeholder="Title" rows="4"/>
+                            <input required type="text" name="title" value="{{ old('title') }}" id="title" cols="2" class="form-control" placeholder="Title" rows="4"/>
                         </div>
                         <div class="form-group">
-                            <select name="channel_id" id="channel_id" cols="2" class="form-control" placeholder="Channel">
+                            <select required name="channel_id" id="channel_id" cols="2" class="form-control" placeholder="Channel">
+                                <option value="-1">Channel</option>
                                 @foreach($channels as $channel)
-                                <option value="{{ $channel->id }}">{{ $channel->name }}</option>
+                                <option {{ (old('channel_id') == $channel->id ) ? 'selected' :  '' }} value="{{ $channel->id }}" >{{ $channel->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group">
-                            <textarea name="body" id="body" cols="2" class="form-control" placeholder="Body" rows="4"></textarea>
+                            <textarea required name="body" id="body" cols="2" class="form-control" placeholder="Body" rows="4">{{ old('body') }}</textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">Post</button>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Post</button>
+                        </div>
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                     </form>
                 </div>
             </div>

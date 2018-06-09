@@ -4,7 +4,12 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <h3> {{ $thread->title }} </h3>
+            <div class="d-flex justify-content-between">
+                <h3> {{ $thread->title }} </h3>
+                @if(auth()->check() && auth()->id() == $thread->user_id)
+                <p><a href="{{ $thread->path() }}/edit" class="">Edit Thread</a></p>
+                @endif
+            </div>
             <h5 class="text-muted">posted by <a href="#"> {{ $thread->owner->name }}</a> </h5>
             <br>
             <div class="card card-default">
