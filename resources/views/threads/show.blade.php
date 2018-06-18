@@ -18,11 +18,27 @@
             <hr>
             <h4 class="text-muted">Replies</h4>
             @foreach($replies as $reply)
-            <div class="card card-default border-light" style="margin-bottom:10px">
+            <div class="card card-default" style="margin-bottom:10px">
+                <div class="card-header text-secondary d-flex justify-content-between" id ="reply-{{ $reply->id }}">
+                    <div class="align-middle">
+                        <a href="#" style="padding: 6px 0;" class="align-middle">{{ $reply->owner->name }}</a> said <a href="#reply-{{ $reply->id }}">{{ $reply->created_at->diffForHumans() }}</a>
+                    </div>
+                    <div>
+                        @if($reply->isFavorited())
+                            <div class="text-danger">
+                                <span>{{ $reply->favorites()->count() }}</span> <i class="fas fa-heart"></i>
+                            </div>
+                        @else
+                        <form action="/replies/{{ $reply->id }}/favorites" method="POST">
+                            {{ csrf_field() }}
+                            <button type="submit" class="btn bg-light">
+                                <span>{{ $reply->favorites()->count() }}</span> <i class="fas fa-heart"></i>
+                            </button>
+                        </form>
+                        @endif
+                    </div>
+                </div>
                 <div class="card-body text-secondary">
-                    <h6 class="card-subtitle mb-2 text-muted" id ="reply-{{ $reply->id }}">
-                        <a href="#">{{ $reply->owner->name }}</a> said <a href="#reply-{{ $reply->id }}">{{ $reply->created_at->diffForHumans() }}</a>
-                    </h6>
                     {{ $reply->body }}
                     <br>
                 </div>
