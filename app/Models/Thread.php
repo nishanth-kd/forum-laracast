@@ -8,10 +8,18 @@ class Thread extends Model
 {
     protected $fillable = ['user_id', 'channel_id', 'body', 'title'];
    
+    protected static function boot () {
+        parent::boot();
+
+        static::addGlobalScope('replyCount', function($builder) {
+            $builder->withCount('replies');
+        });
+    }
+
     public function path() {
         return '/threads/' . $this->channel->slug . '/' . $this->id;
     }
-    
+
     public function owner() {
         return $this->belongsTo('App\User', 'user_id');
     }
@@ -26,5 +34,9 @@ class Thread extends Model
 
     public function addReply($reply) {
         $this->replies()->create($reply);
+    }
+
+    public function scopeFilter($query, $filters) {
+        return $filters->apply($query);
     }
 }

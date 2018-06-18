@@ -21,7 +21,7 @@
                     <a href="{{ $thread->path() }}">
                         <h4>{{ $thread->title }}</h4>
                     </a>
-                    <p class="text-muted">{{ $thread->owner->name }} posted {{ $thread->created_at->diffForHumans() }}</p>
+                    <p class="text-muted">{{ $thread->owner->name }} posted {{ $thread->created_at->diffForHumans() }} and has <strong>{{ $thread->replies_count }} {{ str_plural('reply', $thread->replies_count) }}</strong></p>
                     <p>{{ $thread->body }}</p>
                     <hr>
                     @endforeach

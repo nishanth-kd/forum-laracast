@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\FeatureTestCase;
+
 class ThreadsTest extends FeatureTestCase
 {
 

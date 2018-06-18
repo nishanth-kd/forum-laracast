@@ -29,13 +29,14 @@
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Browse <span class="caret"></span>
+                                Threads <span class="caret"></span>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="/threads">All Threads</a>
+                                <a class="dropdown-item" href="/threads">All</a>
                                 @if(auth()->check())
-                                <a class="dropdown-item" href="/threads?by={{ auth()->user()->name }}">My Threads</a>
+                                <a class="dropdown-item" href="/threads?by={{ auth()->user()->name }}">My</a>
                                 @endif 
+                                <a class="dropdown-item" href="/threads?popularity=1">Popular</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
