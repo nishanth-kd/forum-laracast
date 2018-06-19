@@ -20,29 +20,22 @@ class ThreadsController extends Controller
         if ($channel->exists) {
             $threads = $threads->where('channel_id', $channel->id);
         }
-        $threads = $threads->latest()->get();
+        $threads = $threads->latest();
         if(request()->wantsJson()) {
-            return $threads;
+            return $threads->get();
+        } else {
+            return view('threads.index', [
+                'threads' => $threads->paginate(10)
+            ]);
         }
-        return view('threads.index', compact('threads'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
         return view('threads.create', compact('channels'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -103,8 +96,10 @@ class ThreadsController extends Controller
      * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Thread $thread)
+    public function destroy($channelSlug, Thread $thread)
     {
-        //
+        $this->authorize('delete', $thread);
+        $thread->delete();
+        return redirect('/threads');
     }
 }

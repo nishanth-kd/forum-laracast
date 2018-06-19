@@ -1,8 +1,0 @@
-#forum
-
-1. Thread
-2. Reply
-3. User
-
-A. A thread belongs to a User.
-B. A Reply belongs to a thread. A Reply also belongs to a User.

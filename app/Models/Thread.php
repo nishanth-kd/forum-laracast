@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\User;
 
 class Thread extends Model
 {
+    use Favoritable;
+
     protected $fillable = ['user_id', 'channel_id', 'body', 'title'];
     protected $with = ['owner', 'channel'];
    
@@ -15,7 +18,10 @@ class Thread extends Model
         static::addGlobalScope('replyCount', function($builder) {
             $builder->withCount('replies');
         });
-        
+
+        static::deleting(function($thread) {
+            $thread->replies()->delete();
+        });
     }
 
     public function path() {
@@ -23,11 +29,11 @@ class Thread extends Model
     }
 
     public function owner() {
-        return $this->belongsTo('App\User', 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function channel() {
-        return $this->belongsTo('App\Models\Channel');
+        return $this->belongsTo(Channel::class);
     }
 
     public function replies() {

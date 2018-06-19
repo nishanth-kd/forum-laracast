@@ -13,7 +13,7 @@ class FavoritesTest extends FeatureTestCase
     {
         $reply = create('App\Models\Reply');
         $this->signIn();
-        $this->post('replies/' . $reply->id .'/favorites');
+        $this->get(route('favorite.reply', [$reply->id]));
         $this->assertCount(1, $reply->favorites);
     }
 
@@ -21,7 +21,7 @@ class FavoritesTest extends FeatureTestCase
     public function a_guest_cant_favorite_a_reply()
     {
         $reply = create('App\Models\Reply');
-        $response = $this->post('replies/' . $reply->id . '/favorites');
+        $response = $this->get(route('favorite.reply', [$reply->id]));
             $response->assertRedirect('login');
     }
 
@@ -31,10 +31,37 @@ class FavoritesTest extends FeatureTestCase
         $this->signIn();
         $reply = create('App\Models\Reply');
 
-        $this->post('replies/' . $reply->id .'/favorites');
-        $this->post('replies/' . $reply->id .'/favorites');
+        $this->get(route('favorite.reply', [$reply->id]));
+        $this->get(route('favorite.reply', [$reply->id]));
         
         $this->assertCount(1, $reply->favorites);
+    }
+
+    /** @test */
+    public function an_authenticated_user_can_favorite_a_thread()
+    {
+        $this->signIn();
+        $thread = create('App\Models\Thread');
+        $this->get(route('favorite.thread', [$thread->id]));
+        $this->assertCount(1, $thread->favorites);
+    }
+
+    /** @test */
+    public function a_guest_cant_favorite_a_thread()
+    {
+        $thread = create('App\Models\Thread');
+        $response = $this->get(route('favorite.thread', [$thread->id]));
+            $response->assertRedirect('login');
+    }
+
+    /** @test */
+    public function an_authenticated_user_may_favorite_a_thread_only_once()
+    {
+        $this->signIn();
+        $thread = create('App\Models\Thread');
+        $this->get(route('favorite.thread', [$thread->id]));
+        $this->get(route('favorite.thread', [$thread->id]));
+        $this->assertCount(1, $thread->favorites);
     }
     
 }

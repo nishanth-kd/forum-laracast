@@ -4,24 +4,34 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8">
-            <div class="card card-default">
+            <div class="card card-default border-light">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
-                        <h3> {{ $thread->title }} </h3>
-                        @if(auth()->check() && auth()->id() == $thread->user_id)
-                        <p><a href="{{ $thread->path() }}/edit" class="">Edit Thread</a></p>
-                        @endif
+                        <h3 class="display-4"> {{ $thread->title }} </h3>
                     </div>
                     {{ $thread->body }}
+                    <hr>
+                    <div class="action">
+                        @can('update', $thread)
+                        <a href="{{ $thread->path() }}/edit" class="btn btn-warning"><i class="fas fa-edit"></i> Edit Thread</a>
+                        @endcan
+                        @can('delete', $thread)
+                        <form action="{{ $thread->path() }}" class="d-inline " method="POST">
+                            {{ csrf_field() }}
+                            {{ method_field('DELETE') }}
+                            <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Delete Thread</button>
+                        </form>
+                        @endcan
+                    </div>
                 </div>
             </div>
             <hr>
-            <h4 class="text-muted">Replies</h4>
+            <h4 class="text-muted"><i class="fas fa-comments"></i> Replies</h4>
             @foreach($replies as $reply)
-            <div class="card card-default" style="margin-bottom:10px">
-                <div class="card-header text-secondary d-flex justify-content-between" id ="reply-{{ $reply->id }}">
+            <div class="card card-default border-light" style="margin-bottom:10px">
+                <div class="card-header border-light text-secondary d-flex justify-content-between" id ="reply-{{ $reply->id }}">
                     <div class="align-middle">
-                        <a href="#" style="padding: 6px 0;" class="align-middle">{{ $reply->owner->name }}</a> said <a href="#reply-{{ $reply->id }}">{{ $reply->created_at->diffForHumans() }}</a>
+                        <a href="{{ $reply->owner->profile() }}" style="padding: 6px 0;" class="align-middle">{{ $reply->owner->name }}</a> said <a href="#reply-{{ $reply->id }}">{{ $reply->created_at->diffForHumans() }}</a>
                     </div>
                     <div>
                         @if($reply->isFavorited())
@@ -29,16 +39,14 @@
                                 <span>{{ $reply->favorites_count }}</span> <i class="fas fa-heart"></i>
                             </div>
                         @else
-                        <form action="/replies/{{ $reply->id }}/favorites" method="POST">
-                            {{ csrf_field() }}
-                            <button type="submit" class="btn bg-light">
-                                <span>{{ $reply->favorites_count }}</span> <i class="fas fa-heart"></i>
-                            </button>
-                        </form>
+                            <span>{{ $reply->favorites_count }}</span>
+                            <a href="{{ route('favorite.reply', [$reply->id]) }}" class="text-muted">
+                                 <i class="fas fa-heart"></i>
+                            </a>
                         @endif
                     </div>
                 </div>
-                <div class="card-body text-secondary">
+                <div class="card-body border-light text-secondary">
                     {{ $reply->body }}
                     <br>
                 </div>
@@ -59,11 +67,11 @@
             @endif
         </div>
         <div class="col-md-4">
-            <div class="card card-default">
+            <div class="card card-default border-light">
                 <div class="card-body">
-                    <p>
-                        Posted {{ $thread->created_at->diffForHumans() }} by <a href="#"> {{ $thread->owner->name }}</a> and has {{ $thread->replies_count }} {{ str_plural('comment', $thread->replies_count) }}.
-                    </p>
+                    <span>
+                        Posted {{ $thread->created_at->diffForHumans() }} by <a href="#"> {{ $thread->owner->name }}</a>.
+                    </span>
                 </div>
             </div>
         </div>

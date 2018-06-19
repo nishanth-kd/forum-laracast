@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\User;
 
 class Reply extends Model
 {
     use Favoritable;
-    
+
     protected $fillable = ['body', 'user_id'];
     protected $with = ['owner', 'favorites'];
 
@@ -20,6 +21,6 @@ class Reply extends Model
     }
 
     public function owner() {
-        return $this->belongsTo('App\User', 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

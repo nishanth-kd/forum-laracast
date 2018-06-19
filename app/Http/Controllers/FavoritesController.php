@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Favorite;
 use App\Models\Reply;
 use Illuminate\Http\Request;
+use App\Models\Thread;
 
 class FavoritesController extends Controller
 {
 
     public function __construct() {
-        $this->middleware('auth', ['except' => ['index', 'show']]);
+        $this->middleware('auth');
     }
 
     public function index()
@@ -23,10 +24,15 @@ class FavoritesController extends Controller
         //
     }
 
-    public function store(Reply $reply, Request $request)
+    public function favoriteReply(Reply $reply, Request $request)
     {
         $reply->favorite();
+        return back();
+    }
 
+    public function favoriteThread(Thread $thread, Request $request)
+    {
+        $thread->favorite();
         return back();
     }
 

@@ -5,7 +5,7 @@ namespace App\Models;
 trait Favoritable {
 
     public function favorites() {
-        return $this->morphMany('App\Models\Favorite', 'favorited');
+        return $this->morphMany(Favorite::class, 'favorited');
     }
 
     public function isFavorited() {
