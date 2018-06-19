@@ -26,13 +26,13 @@
                     <div>
                         @if($reply->isFavorited())
                             <div class="text-danger">
-                                <span>{{ $reply->favorites()->count() }}</span> <i class="fas fa-heart"></i>
+                                <span>{{ $reply->favorites_count }}</span> <i class="fas fa-heart"></i>
                             </div>
                         @else
                         <form action="/replies/{{ $reply->id }}/favorites" method="POST">
                             {{ csrf_field() }}
                             <button type="submit" class="btn bg-light">
-                                <span>{{ $reply->favorites()->count() }}</span> <i class="fas fa-heart"></i>
+                                <span>{{ $reply->favorites_count }}</span> <i class="fas fa-heart"></i>
                             </button>
                         </form>
                         @endif
