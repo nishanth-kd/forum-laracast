@@ -7,7 +7,7 @@ use App\User;
 
 class Thread extends Model
 {
-    use Favoritable;
+    use CanBeFavorited, RecordsActivity;
 
     protected $fillable = ['user_id', 'channel_id', 'body', 'title'];
     protected $with = ['owner', 'channel'];

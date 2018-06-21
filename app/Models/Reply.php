@@ -7,7 +7,7 @@ use App\User;
 
 class Reply extends Model
 {
-    use Favoritable;
+    use CanBeFavorited, RecordsActivity;
 
     protected $fillable = ['body', 'user_id'];
     protected $with = ['owner', 'favorites'];
