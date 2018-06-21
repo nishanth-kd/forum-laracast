@@ -16,9 +16,9 @@ class ProfilesTest extends FeatureTestCase
     }
 
     /** @test */
-    public function profiles_display_all_threads_created_by_user() {
-        $this->withoutExceptionHandling();
-        $thread = create('App\Models\Thread');
+    public function profiles_display_threads_posted_by_user_in_the_feed() {
+        $this->signIn();
+        $thread = create('App\Models\Thread', ['user_id' => auth()->id()]);
         $this->get($thread->owner->profile())
             ->assertSee($thread->title);
     }

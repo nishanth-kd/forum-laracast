@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\FeatureTestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\Activity;
 
 class DeleteThreadsTest extends FeatureTestCase
 {
@@ -20,13 +21,26 @@ class DeleteThreadsTest extends FeatureTestCase
 
     /** @test */
     public function deleting_a_thread_deletes_its_replies() {
-        $thread = create('App\Models\Thread');
-        $reply = create('App\Models\Reply', ['thread_id' => $thread->id]);
-        $this->signIn($thread->owner);
+        $this->signIn();
+        $thread = create('App\Models\Thread', ['user_id' => auth()->id()]);
+        $reply = create('App\Models\Reply', [
+            'thread_id' => $thread->id,
+            'user_id' => auth()->id()
+        ]);
+        $this->assertEquals(2, Activity::count());
         $this->delete($thread->path())
             ->assertRedirect('/threads');
-        $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
-        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+        $this->assertDatabaseMissing('threads', ['id' => $thread->id])
+            ->assertDatabaseMissing('replies', ['id' => $reply->id])
+            ->assertDatabaseMissing('activities', [
+                'subject_id' => $reply->id,
+                'subject_type' => get_class($reply)
+            ])
+            ->assertDatabaseMissing('activities', [
+                'subject_id' => $thread->id,
+                'subject_type' => get_class($thread)
+            ]);
+        $this->assertEquals(0, Activity::count());
     }
 
     /** @test */
