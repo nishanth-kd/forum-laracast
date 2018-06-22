@@ -13,7 +13,7 @@ class Reply extends Model
     protected $with = ['owner', 'favorites'];
 
     public function path() {
-        return $this->thread->path() . '#reply' . $this->reply->id;
+        return $this->thread->path() . '#reply' . $this->id;
     }
 
     public function thread() {

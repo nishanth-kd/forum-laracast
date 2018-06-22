@@ -2,7 +2,9 @@
     <p class="text-secondary"><strong>{{ $date }}</strong></p>
     <hr>
     @foreach($activities as $activity)
-        @include("activities.show.{$activity->type}")
+        @if(view()->exists("activities.show.{$activity->type}"))
+            @include("activities.show.{$activity->type}")
+        @endif
     @endforeach
 @empty
 <div class="card card-default">

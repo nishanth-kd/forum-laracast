@@ -15,7 +15,16 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('navigation', require('./components/Navigation.vue'));
 Vue.component('nav-item', require('./components/NavigationItem.vue'));
+Vue.component('flash', require('./components/Flash.vue'));
 
+Vue.config.devtools = true;
+
+const app = new Vue({
+    el: '#app'
+});
+
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})

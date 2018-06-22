@@ -21,4 +21,8 @@ trait CanBeFavorited {
     public function getFavoritesCountAttribute() {
         return $this->favorites->count();
     }
+
+    public function getFavoritedType() {
+        return strtolower((new \ReflectionClass($this))->getShortName());
+    }
 }

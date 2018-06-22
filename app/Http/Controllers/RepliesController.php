@@ -44,7 +44,8 @@ class RepliesController extends Controller
             'user_id' => auth()->id()
         ]);
 
-        return back();
+        return back()
+        ->with('flash', "Your reply has been posted.");
     }
 
     /**
@@ -89,6 +90,8 @@ class RepliesController extends Controller
      */
     public function destroy(Reply $reply)
     {
-        //
+        $this->authorize('delete', $reply);
+        $reply->delete();
+        return redirect($reply->thread->path());
     }
 }

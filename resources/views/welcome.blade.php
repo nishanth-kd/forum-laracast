@@ -87,7 +87,6 @@
             </div>
         </div>
         <script>
-            Vue.config.devtools = true
             const app = new Vue({
                 el : ".content",
                 methods : {

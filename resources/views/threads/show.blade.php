@@ -35,15 +35,27 @@
                     </div>
                     <div>
                         @if($reply->isFavorited())
-                            <div class="text-danger">
+                            <div class="text-danger d-inline" data-toggle="tooltip" data-placement="top" title="Favorited">
                                 <span>{{ $reply->favorites_count }}</span> <i class="fas fa-heart"></i>
                             </div>
                         @else
-                            <span>{{ $reply->favorites_count }}</span>
-                            <a href="{{ route('favorite.reply', [$reply->id]) }}" class="text-muted">
-                                 <i class="fas fa-heart"></i>
-                            </a>
+                            <div class="text-muted d-inline" data-toggle="tooltip" data-placement="top" title="Favorite">
+                                <span>{{ $reply->favorites_count }}</span>
+                                <a href="{{ route('favorite.reply', [$reply->id]) }}" data-toggle="tooltip" data-placement="top" title="Favorite" class="text-muted">
+                                    <i class="fas fa-heart"></i>
+                                </a>
+                            </div>
                         @endif
+                        @can('delete', $reply)
+                        &nbsp;
+                        <div class="text-muted d-inline" data-toggle="tooltip" data-placement="top" title="Delete">
+                            <form action="{{ route('delete.reply', [$reply->id]) }}" class="d-inline" method="POST">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                                <a type="submit" class="bg-light text-muted"><i class="fas fa-times"></i></a>
+                            </form>
+                        </div>
+                        @endcan
                     </div>
                 </div>
                 <div class="card-body border-light text-secondary">
@@ -58,9 +70,9 @@
             <form action="{{ $thread->path() . '/replies' }}" method="post">
                 {{ csrf_field() }}
                 <div class="form-group">
-                    <textarea name="body" id="body" cols="2" class="form-control" placeholder="Say something..." rows="4"></textarea>
+                    <textarea name="body" id="post-reply-body" cols="2" class="form-control" placeholder="Say something..." rows="4"></textarea>
                 </div> 
-                <button type="submit" class="btn btn-primary">Comment</button>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-comment "></i> Reply</button>
             </form>
             @else
                 Please <a href="{{ route('login') }}">sign in</a> to participate in the discussion.
