@@ -27,13 +27,19 @@ class FavoritesController extends Controller
     public function favoriteReply(Reply $reply, Request $request)
     {
         $reply->favorite();
-        return back();
     }
 
     public function favoriteThread(Thread $thread, Request $request)
     {
         $thread->favorite();
-        return back();
+    }
+
+    public function unfavoriteReply(Reply $reply, Request $request) {
+        $reply->unfavorite();
+    }
+
+    public function unfavoriteThread(Thread $thread, Request $request) {
+        $thread->unfavorite();
     }
 
     public function show(Favorite $favorite)

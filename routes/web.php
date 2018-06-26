@@ -23,9 +23,12 @@ Route::delete('/threads/{channel}/{thread}/', 'ThreadsController@destroy');
 Route::get('/threads/{channel}/{thread}/edit', 'ThreadsController@edit');
 Route::post('/threads/{channel}/{thread}/replies/', 'RepliesController@store');
 Route::delete('/replies/{reply}', 'RepliesController@destroy')->name('delete.reply');
+Route::patch('/replies/{reply}', 'RepliesController@update');
 Route::get('/threads/{channel}/', 'ThreadsController@index');
-Route::get('favorite/reply/{reply}/', 'FavoritesController@favoriteReply')->name('favorite.reply');
-Route::get('favorite/thread/{thread}/', 'FavoritesController@favoriteThread')->name('favorite.thread');
+Route::post('favorite/reply/{reply}/', 'FavoritesController@favoriteReply')->name('favorite.reply');
+Route::delete('favorite/reply/{reply}/', 'FavoritesController@unfavoriteReply')->name('favorite.reply');
+Route::post('favorite/thread/{thread}/', 'FavoritesController@favoriteThread')->name('favorite.thread');
+Route::delete('favorite/thread/{thread}/', 'FavoritesController@unfavoriteThread')->name('favorite.thread');
 Route::get('profiles/{user}', 'ProfilesController@show')->name('profile');
 
 Auth::routes();

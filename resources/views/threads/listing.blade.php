@@ -10,18 +10,7 @@
             </div>
             @if(auth()->check())
             <div class="col-md-4 text-right">
-                @if($thread->isFavorited())
-                    <div class="text-danger d-inline"  data-toggle="tooltip" data-placement="top" title="Favorited" >
-                        <span>{{ $thread->favorites_count }}</span> <i class="fas fa-heart"></i>
-                    </div>
-                @else
-                <div class="text-muted d-inline" data-toggle="tooltip" data-placement="top" title="Favorite" >
-                    <span>{{ $thread->favorites_count }}</span> 
-                    <a href="{{ route('favorite.thread', [$thread->id]) }}" >
-                        <i class="fas fa-heart text-muted"></i>
-                    </a>
-                </div>
-                @endif
+                <favorite :model="{{ $thread }}"></favorite>
                 <div class="{{ ($thread->replies_count > 0) ? 'text-dark' : 'text-muted' }} d-inline">
                     <span>{{ $thread->replies_count }}</span>
                     <a href="{{ $thread->path() }}#post-reply-body" data-toggle="tooltip" data-placement="top" title="Reply" class="{{ ($thread->replies_count > 0) ? 'text-dark' : 'text-muted' }}">

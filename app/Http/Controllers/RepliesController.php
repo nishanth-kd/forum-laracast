@@ -67,7 +67,7 @@ class RepliesController extends Controller
      */
     public function edit(Reply $reply)
     {
-        //
+        
     }
 
     /**
@@ -79,7 +79,11 @@ class RepliesController extends Controller
      */
     public function update(Request $request, Reply $reply)
     {
-        //
+        $this->authorize('update', $reply);
+        $reply->update([
+            'body' => request('body'),
+            'user_id' => auth()->id()
+        ]);
     }
 
     /**
@@ -92,6 +96,5 @@ class RepliesController extends Controller
     {
         $this->authorize('delete', $reply);
         $reply->delete();
-        return redirect($reply->thread->path());
     }
 }

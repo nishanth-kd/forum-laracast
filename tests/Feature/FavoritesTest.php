@@ -13,15 +13,37 @@ class FavoritesTest extends FeatureTestCase
     {
         $reply = create('App\Models\Reply');
         $this->signIn();
-        $this->get(route('favorite.reply', [$reply->id]));
+        $this->post("favorite/reply/{$reply->id}");
         $this->assertCount(1, $reply->favorites);
+    }
+
+    /** @test */
+    public function an_authenticated_user_can_unfavorite_a_thread()
+    {
+        $thread = create('App\Models\Thread');
+        $this->signIn();
+        $this->post("favorite/thread/{$thread->id}");
+        $this->assertCount(1, $thread->favorites);
+        $this->delete("favorite/thread/{$thread->id}");
+        $this->assertCount(0, $thread->fresh()->favorites);
+    }
+
+    /** @test */
+    public function an_authenticated_user_can_unfavorite_a_reply()
+    {
+        $reply = create('App\Models\Reply');
+        $this->signIn();
+        $this->post("favorite/reply/{$reply->id}");
+        $this->assertCount(1, $reply->favorites);
+        $this->delete("favorite/reply/{$reply->id}");
+        $this->assertCount(0, $reply->fresh()->favorites);
     }
 
     /** @test */
     public function a_guest_cant_favorite_a_reply()
     {
         $reply = create('App\Models\Reply');
-        $response = $this->get(route('favorite.reply', [$reply->id]));
+        $response = $this->post("favorite/reply/{$reply->id}");
             $response->assertRedirect('login');
     }
 
@@ -31,8 +53,8 @@ class FavoritesTest extends FeatureTestCase
         $this->signIn();
         $reply = create('App\Models\Reply');
 
-        $this->get(route('favorite.reply', [$reply->id]));
-        $this->get(route('favorite.reply', [$reply->id]));
+        $this->post("favorite/reply/{$reply->id}");
+        $this->post("favorite/reply/{$reply->id}");
         
         $this->assertCount(1, $reply->favorites);
     }
@@ -42,7 +64,7 @@ class FavoritesTest extends FeatureTestCase
     {
         $this->signIn();
         $thread = create('App\Models\Thread');
-        $this->get(route('favorite.thread', [$thread->id]));
+        $this->post(route('favorite.thread', [$thread->id]));
         $this->assertCount(1, $thread->favorites);
     }
 
@@ -50,7 +72,7 @@ class FavoritesTest extends FeatureTestCase
     public function a_guest_cant_favorite_a_thread()
     {
         $thread = create('App\Models\Thread');
-        $response = $this->get(route('favorite.thread', [$thread->id]));
+        $response = $this->post(route('favorite.thread', [$thread->id]));
             $response->assertRedirect('login');
     }
 
@@ -59,8 +81,8 @@ class FavoritesTest extends FeatureTestCase
     {
         $this->signIn();
         $thread = create('App\Models\Thread');
-        $this->get(route('favorite.thread', [$thread->id]));
-        $this->get(route('favorite.thread', [$thread->id]));
+        $this->post(route('favorite.thread', [$thread->id]));
+        $this->post(route('favorite.thread', [$thread->id]));
         $this->assertCount(1, $thread->favorites);
     }
     

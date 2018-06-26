@@ -11,6 +11,7 @@ class Thread extends Model
 
     protected $fillable = ['user_id', 'channel_id', 'body', 'title'];
     protected $with = ['owner', 'channel'];
+    protected $appends = ['favoritesCount', 'favoritedType', 'isFavorited'];
    
     protected static function boot () {
         parent::boot();

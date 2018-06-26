@@ -15,6 +15,8 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+Vue.component('reply', require('./components/Reply.vue'));
+Vue.component('favorite', require('./components/Favorite.vue'));
 Vue.component('navigation', require('./components/Navigation.vue'));
 Vue.component('nav-item', require('./components/NavigationItem.vue'));
 Vue.component('flash', require('./components/Flash.vue'));

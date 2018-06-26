@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\FeatureTestCase;
+use App\Models\Reply;
 
 class ParticipateInForumTest extends FeatureTestCase
 {
@@ -32,6 +33,32 @@ class ParticipateInForumTest extends FeatureTestCase
         $this->withoutExceptionHandling()
             ->expectException('Illuminate\Auth\AuthenticationException');
         $this->postReply();
+    }
+
+    /** @test */
+    public function authorized_user_can_update_replies() {
+        $this->signIn();
+        $reply = create('App\Models\Reply', ['user_id' => auth()->id()]);
+        $updatedReply = 'Updated Reply';
+        $this->patch('/replies/' . $reply->id, [
+            'body' => $updatedReply
+        ]);
+        $this->assertDatabaseHas('replies', ['id' => $reply->id, 'body' => $updatedReply]);
+    }
+
+    /** @test */
+    public function unthorized_user_cant_update_replies() {
+
+        $reply = create('App\Models\Reply');
+        $updatedReply = 'Updated Reply';
+        $this->patch('/replies/' . $reply->id, [
+            'body' => $updatedReply
+        ])->assertRedirect('login');
+        $this->signIn();
+        $this->patch('/replies/' . $reply->id, [
+            'body' => $updatedReply
+        ])->assertStatus(403);
+        $this->assertDatabaseMissing('replies', ['id' => $reply->id, 'body' => $updatedReply]);
     }
 
 }

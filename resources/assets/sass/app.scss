@@ -16,3 +16,15 @@
 button, html [type="button"], [type="reset"], [type="submit"] {
   -webkit-appearance: initial;
 }
+
+a.bg-light:hover, a.bg-light:focus, button.bg-light:hover, button.bg-light:focus {
+  background-color: transparent !important;
+}
+
+.card.card-default.border-light{
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 1px 4px;
+}
+
+[v-cloak] {
+  display:none;
+}

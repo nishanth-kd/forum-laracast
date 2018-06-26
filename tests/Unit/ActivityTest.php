@@ -36,7 +36,7 @@ class ActivityTest extends TestCase
     public function it_records_activity_when_reply_is_favorited() {
         $reply = create('App\Models\Reply');
         $this->signIn();
-        $this->get(route('favorite.reply', [$reply->id]));
+        $this->post(route('favorite.reply', [$reply->id]));
         $this->assertEquals(1, Activity::count());
         $this->assertEquals(Activity::first()->subject->favorited->id, $reply->id);
     }
