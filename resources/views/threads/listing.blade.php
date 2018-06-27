@@ -10,7 +10,9 @@
             </div>
             @if(auth()->check())
             <div class="col-md-4 text-right">
-                <favorite :model="{{ $thread }}"></favorite>
+                @if(auth()->check())
+                    <favorite :model="{{ $thread }}"></favorite>
+                @endif
                 <div class="{{ ($thread->replies_count > 0) ? 'text-dark' : 'text-muted' }} d-inline">
                     <span>{{ $thread->replies_count }}</span>
                     <a href="{{ $thread->path() }}#post-reply-body" data-toggle="tooltip" data-placement="top" title="Reply" class="{{ ($thread->replies_count > 0) ? 'text-dark' : 'text-muted' }}">

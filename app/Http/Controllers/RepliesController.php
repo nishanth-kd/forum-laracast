@@ -39,11 +39,14 @@ class RepliesController extends Controller
      */
     public function store($channelSlug, Thread $thread, Request $request)
     {
-        $thread->addReply([
+        $reply = $thread->addReply([
             'body' => request('body'),
             'user_id' => auth()->id()
         ]);
-
+        
+        if(request()->expectsJson()) {
+            return $reply->load('owner');
+        }
         return back()
         ->with('flash', "Your reply has been posted.");
     }

@@ -86,7 +86,13 @@
             <flash message="{{ session('flash') }}"></flash>
         </main>
     </div>
-
+    <script>
+        window.App = {!! json_encode([
+            'csrfToken' => csrf_token(),
+            'signedIn' => auth()->check(),
+            'user' => auth()->user(),
+        ]) !!};
+    </script>
     <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

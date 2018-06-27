@@ -4,6 +4,12 @@ namespace App\Models;
 
 trait CanBeFavorited {
 
+    protected static function bootCanBeFavorited() {
+        static::deleting(function($model) {
+            $model->favorites->each->delete();
+        });
+    }
+
     public function favorites() {
         return $this->morphMany(Favorite::class, 'favorited');
     }
@@ -19,8 +25,7 @@ trait CanBeFavorited {
     }
 
     public function unfavorite() {
-        //$this->favorites()->delete(['user_id' => auth()->id()]);
-        $this->favorites()->where('user_id', auth()->id())->delete();
+        $this->favorites()->where('user_id', auth()->id())->get()->each->delete();
     }
 
     public function getFavoritesCountAttribute() {

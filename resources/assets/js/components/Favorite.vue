@@ -11,7 +11,8 @@
         data() {
             return {
                 count : this.model.favoritesCount,
-                isFavorited : this.model.isFavorited
+                isFavorited : this.model.isFavorited,
+                type: this.model.favoritedType
             }
         },
         computed : {
