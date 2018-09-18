@@ -2,7 +2,7 @@
         <div class="card card-default border-light" style="margin-bottom:10px">
             <div class="card-header border-light text-secondary d-flex justify-content-between" :id ="'reply-' + data.id">
                 <div class="align-middle">
-                    <a :href="'/profiles/' + data.owner.name" style="padding: 6px 0;" class="align-middle" v-text="data.owner.name"></a> said <a :href="'#reply-' + data.id">...</a>
+                    <a :href="'/profiles/' + data.owner.name" style="padding: 6px 0;" class="align-middle" v-text="data.owner.name"></a> said <a :href="'#reply-' + data.id" v-text="ago"></a>
                 </div>
                 <div>
                     <favorite v-if="canFavorite" :model="data"></favorite>
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+    import moment from 'moment';
     export default {
         props:['data'],
         data() {
@@ -48,6 +49,9 @@
             canUpdate() {
                 return this.authorize(user => this.data.user_id == user.id);
             },
+            ago() {
+                return moment(this.data.created_at + 'Z').fromNow();
+            }
         },
         methods: {
             update() {
@@ -60,6 +64,7 @@
             destroy() {
                 axios.delete('/replies/' + this.data.id); 
                 this.$emit('deleted', this.data.id);
+                flash("Your reply has been deleted.");
             }
         }
     }

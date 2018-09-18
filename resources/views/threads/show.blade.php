@@ -28,7 +28,7 @@
                 </div>
                 <hr>
                 <h4 class="text-muted"><i class="fas fa-comments"></i> Replies</h4>
-                <replies :data="{{ $thread->replies }}" @removed="removedReply" @added="addedReply" :endpoint="'{{  $thread->path() . '/replies' }}'"></replies>
+                <replies @removed="removedReply" @added="addedReply" :endpoint="'{{  $thread->path() . '/replies' }}'"></replies>
             </div>
             <div class="col-md-4">
                 <div class="card card-default border-light">

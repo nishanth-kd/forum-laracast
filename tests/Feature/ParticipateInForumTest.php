@@ -23,8 +23,9 @@ class ParticipateInForumTest extends FeatureTestCase
     /** @test */
     public function an_authenticated_user_can_reply_on_thread()
     {
-        $this->signIn()
-            ->postReply();
+        $this->signIn();
+        $this->post($this->thread->path() . '/replies', $this->reply->toArray());
+        $this->assertDatabaseHas('replies', ['body' => $this->reply->body, 'thread_id' => $this->thread->id, 'user_id' => auth()->id()]);
     }
 
     /** @test */

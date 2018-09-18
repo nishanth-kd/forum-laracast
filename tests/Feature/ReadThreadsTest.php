@@ -25,14 +25,6 @@ class ReadThreadsTest extends FeatureTestCase
     }
 
     /** @test */
-    public function anyone_can_view_replies()
-    {
-        $response = $this->get($this->thread->path())
-            ->assertSee($this->reply->body)
-            ->assertSee($this->reply->owner->name);
-    }
-
-    /** @test */
     public function a_user_can_view_all_threads()
     {
         $response = $this->get('/threads/')
@@ -69,4 +61,17 @@ class ReadThreadsTest extends FeatureTestCase
         $response = $this->getJson('threads?popularity=1')->json();
         $this->assertEquals([3, 2, 1, 0], array_column($response, 'replies_count'));
     }
+
+    /** @test */
+    public function a_user_can_filter_threads_by_unanswered() {
+        $threadWith0Replies = create('App\Models\Thread');
+        $threadWith3Replies = create('App\Models\Thread');
+        create('App\Models\Reply', ['thread_id' => $threadWith3Replies->id], 3);
+        $threadWith2Replies = create('App\Models\Thread');
+        create('App\Models\Reply', ['thread_id' => $threadWith2Replies->id], 2);
+        $response = $this->getJson('threads?unanswered=1')->json();
+        //dd(array_column($response, 'replies_count'));
+        $this->assertCount(1, $response);
+    }
+
 }

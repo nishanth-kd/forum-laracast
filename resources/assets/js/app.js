@@ -16,6 +16,7 @@ window.Vue = require('vue');
  */
 
 Vue.component('favorite', require('./components/Favorite.vue'));
+Vue.component('paginator', require('./components/Paginator.vue'));
 Vue.component('navigation', require('./components/Navigation.vue'));
 Vue.component('nav-item', require('./components/NavigationItem.vue'));
 Vue.component('flash', require('./components/Flash.vue'));
